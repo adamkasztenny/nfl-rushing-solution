@@ -57,6 +57,14 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsPaginatedRushingStatis
 	assert.Equal(suite.T(), suite.expectedRushingStatistics[2], lastPage[0])
 }
 
+func (suite *rushingStatisticsRepositorySuite) TestReturnsAnEmptySliceIfThePageIsOutOfBounds() {
+	repository := CreateRushingStatisticRepository(suite.filename)
+
+	result := repository.Get(2, 5000)
+
+	assert.Empty(suite.T(), result)
+}
+
 func (suite *rushingStatisticsRepositorySuite) TestReturnsAllRushingStatisticsIfNotPaginatedProperly() {
 	repository := CreateRushingStatisticRepository(suite.filename)
 
