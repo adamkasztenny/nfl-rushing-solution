@@ -9,5 +9,6 @@ test:
 	cd ./frontend/nfl-rushing && $(MAKE) test
 	cd ./backend && $(MAKE) test
 
-ci: test build
-
+ci:
+	cd ./frontend/nfl-rushing && $(MAKE) ci
+	cd ./backend && $(MAKE) ci
