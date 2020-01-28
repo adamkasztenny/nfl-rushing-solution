@@ -25,9 +25,7 @@ func CreateRushingStatisticRepository(filename string) RushingStatisticRepositor
 }
 
 func (repository *RushingStatisticRepository) Get(limit, offset int) []domain.RushingStatistic {
-	if repository.shouldLoadRushingStatistics() {
-		repository.initializeRushingStatisticsCache()
-	}
+	repository.initializeRushingStatisticsCache()
 	return repository.getPaginatedSubset(limit, offset)
 }
 
@@ -42,10 +40,6 @@ func (repository *RushingStatisticRepository) getPaginatedSubset(limit, offset i
 	}
 
 	return repository.rushingStatistics[startingIndex:endingIndex]
-}
-
-func (repository *RushingStatisticRepository) shouldLoadRushingStatistics() bool {
-	return repository.rushingStatistics == nil
 }
 
 func (repository *RushingStatisticRepository) initializeRushingStatisticsCache() {
