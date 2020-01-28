@@ -6,7 +6,7 @@ test:
 	go tool cover -html=coverage.out
 
 start: build
-	docker run -p 8080:8080 nfl-rushing
+	docker run -d -p 8080:8080 nfl-rushing
 
 lint:
 	go vet
