@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strconv"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/adamkasztenny/nfl-rushing/configuration"
+	"github.com/adamkasztenny/nfl-rushing/logging"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,8 @@ var rootCmd = &cobra.Command{
 	Short:   "The GraphQL API which serves up NFL rushing data",
 	Run: func(cmd *cobra.Command, args []string) {
 		validateArgs(args)
-		initializeLogger()
+		logging.InitializeLogger()
+		configuration.LoadConfiguration()
 	},
 }
 
@@ -26,27 +27,13 @@ func Execute() {
 	}
 }
 
-func validateArgs(args []string) (inputFile string, port int) {
+func validateArgs(args []string) {
 	if len(args) < 1 {
 		printUsage()
 	}
-
-	inputFile = args[0]
-	port, err := strconv.Atoi(args[1])
-
-	if err != nil {
-		printUsage()
-	}
-	return inputFile, port
 }
 
 func printUsage() {
-	fmt.Println("Usage: nfl-rushing [data JSON input file] [port]")
+	fmt.Println("Usage: nfl-rushing [TOML config file]")
 	os.Exit(1)
-}
-
-func initializeLogger() {
-	formatter := new(log.TextFormatter)
-	formatter.FullTimestamp = true
-	log.SetFormatter(formatter)
 }
