@@ -3,7 +3,6 @@ package persistence
 import (
 	"encoding/json"
 	"io/ioutil"
-	"math"
 	"sync"
 
 	"github.com/adamkasztenny/nfl-rushing/domain"
@@ -30,10 +29,7 @@ func (repository *RushingStatisticRepository) Get(limit, offset int) []domain.Ru
 }
 
 func (repository *RushingStatisticRepository) getPaginatedSubset(limit, offset int) []domain.RushingStatistic {
-	totalSize := len(repository.rushingStatistics)
-	pageSize := repository.roundUp(totalSize, limit)
-
-	startingIndex := offset * pageSize
+	startingIndex := offset * limit
 	endingIndex := startingIndex + limit
 	if endingIndex >= len(repository.rushingStatistics) {
 		return repository.rushingStatistics[startingIndex:]
@@ -62,8 +58,4 @@ func (repository *RushingStatisticRepository) deserializeJSON(dataAsJSON []byte)
 	}
 
 	repository.rushingStatistics = rushingStatistics
-}
-
-func (RushingStatisticRepository) roundUp(x, y int) int {
-	return int(math.Ceil(float64(x) / float64(y)))
 }
