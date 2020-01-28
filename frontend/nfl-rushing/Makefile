@@ -11,6 +11,9 @@ start: build
 test:
 	ng test --watch=false
 
+lint:
+	ng lint
+
 ci: build test
 
 

@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  graphqlUri: 'nfl-rushing-backend:8080/graphql'
 };
