@@ -32,10 +32,10 @@ func (repository *RushingStatisticRepository) Get(limit, offset int) []domain.Ru
 }
 
 func (repository *RushingStatisticRepository) getPaginatedSubset(limit, offset int) []domain.RushingStatistic {
-	size := len(repository.rushingStatistics)
-	pageSize := repository.roundUp(size, limit)
+	totalSize := len(repository.rushingStatistics)
+	pageSize := repository.roundUp(totalSize, limit)
 
-	startingIndex := pageSize * offset
+	startingIndex := offset * pageSize
 	endingIndex := startingIndex + limit
 	if endingIndex >= len(repository.rushingStatistics) {
 		return repository.rushingStatistics[startingIndex:]

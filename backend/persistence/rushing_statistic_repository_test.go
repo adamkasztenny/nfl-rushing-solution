@@ -19,6 +19,13 @@ func (suite *rushingStatisticsRepositorySuite) SetupTest() {
 	suite.setupExpectedRushingStatistics()
 }
 
+func (suite *rushingStatisticsRepositorySuite) TestInitialization() {
+	repository := CreateRushingStatisticRepository("test-empty-rushing-statistics.json")
+
+	assert.NotEmpty(suite.T(), repository.filename)
+	assert.NotNil(suite.T(), repository.once)
+}
+
 func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatisticsIfThereAreNone() {
 	repository := CreateRushingStatisticRepository("test-empty-rushing-statistics.json")
 
@@ -57,6 +64,17 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsAllRushingStatisticsIf
 
 	assert.True(suite.T(), len(rushingStatistics) == 3)
 	assert.ElementsMatch(suite.T(), suite.expectedRushingStatistics, rushingStatistics)
+}
+
+func (suite *rushingStatisticsRepositorySuite) TestCachesRushingStatistics() {
+	repository := CreateRushingStatisticRepository(suite.filename)
+
+	rushingStatistics := repository.Get(3, 0)
+	assert.True(suite.T(), len(rushingStatistics) == 3)
+
+	repository.filename = "non-existent-file.json"
+	rushingStatistics = repository.Get(3, 0)
+	assert.True(suite.T(), len(rushingStatistics) == 3)
 }
 
 func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatisticsIfTheFileDoesNotExist() {
