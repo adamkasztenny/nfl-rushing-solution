@@ -1,0 +1,53 @@
+[
+  {
+    "Player":"Joe Banyard",
+    "Team":"JAX",
+    "Pos":"RB",
+    "Att":2,
+    "Att/G":2,
+    "Yds":7,
+    "Avg":3.5,
+    "Yds/G":7,
+    "TD":0,
+    "Lng":"7",
+    "1st":0,
+    "1st%":0,
+    "20+":0,
+    "40+":0,
+    "FUM":0
+  },
+  {
+    "Player":"Breshad Perriman",
+    "Team":"BAL",
+    "Pos":"WR",
+    "Att":1,
+    "Att/G":0.1,
+    "Yds":2,
+    "Avg":2,
+    "Yds/G":0.1,
+    "TD":0,
+    "Lng":"2",
+    "1st":0,
+    "1st%":0,
+    "20+":0,
+    "40+":0,
+    "FUM":0
+  },
+  {
+    "Player":"Tyreek Hill",
+    "Team":"KC",
+    "Pos":"WR",
+    "Att":24,
+    "Att/G":1.5,
+    "Yds":267,
+    "Avg":11.1,
+    "Yds/G":16.7,
+    "TD":3,
+    "Lng":"70T",
+    "1st":10,
+    "1st%":41.7,
+    "20+":4,
+    "40+":2,
+    "FUM":0
+  }
+]

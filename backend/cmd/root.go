@@ -14,9 +14,8 @@ var rootCmd = &cobra.Command{
 	Version: "1.0.0",
 	Short:   "The GraphQL API which serves up NFL rushing data",
 	Run: func(cmd *cobra.Command, args []string) {
-		inputFile, port := validateArgs(args)
+		validateArgs(args)
 		initializeLogger()
-
 	},
 }
 
