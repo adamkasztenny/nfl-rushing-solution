@@ -1,12 +1,12 @@
 build:
-	sudo docker build -t nfl-rushing .
+	docker build -t nfl-rushing .
 
 test:
 	go test -timeout 300ms -v -coverprofile coverage.out ./...
 	go tool cover -html=coverage.out
 
 start: build
-	sudo docker run nfl-rushing
+	docker run -p 8080:8080 nfl-rushing
 
 lint:
 	go vet
