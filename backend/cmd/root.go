@@ -2,11 +2,15 @@ package cmd
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/adamkasztenny/nfl-rushing/configuration"
+	"github.com/adamkasztenny/nfl-rushing/graphql"
 	"github.com/adamkasztenny/nfl-rushing/logging"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var rootCmd = &cobra.Command{
@@ -14,9 +18,9 @@ var rootCmd = &cobra.Command{
 	Version: "1.0.0",
 	Short:   "The GraphQL API which serves up NFL rushing data",
 	Run: func(cmd *cobra.Command, args []string) {
-		validateArgs(args)
 		logging.InitializeLogger()
 		configuration.LoadConfiguration()
+		serveHTTP()
 	},
 }
 
@@ -27,13 +31,16 @@ func Execute() {
 	}
 }
 
-func validateArgs(args []string) {
-	if len(args) < 1 {
-		printUsage()
-	}
-}
+func serveHTTP() {
+	handler := graphql.Handler()
+	http.Handle("/graphql", handler)
+	http.Handle("/graphql/", handler)
 
-func printUsage() {
-	fmt.Println("Usage: nfl-rushing [TOML config file]")
-	os.Exit(1)
+	port := viper.GetString("PORT")
+	log.Infof("Going to listen on port %v", port)
+
+	err := http.ListenAndServe(port, nil)
+	if err != nil {
+		log.Fatalf("Error starting server: %v", err)
+	}
 }
