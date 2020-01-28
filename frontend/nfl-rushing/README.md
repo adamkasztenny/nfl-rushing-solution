@@ -5,7 +5,7 @@ You will need the [Angular CLI](https://cli.angular.io/) installed locally to ru
 Run `make start`, then navigate to [localhost:8080](http://localhost:8080).
 
 ## Running the Development server
-Run `make start_development`
+Run `make start_development`, then navigate to [localhost:4200](http://localhost:4200)
 
 ## Build
 Run `make build`
