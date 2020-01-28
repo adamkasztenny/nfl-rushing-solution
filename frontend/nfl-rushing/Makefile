@@ -9,7 +9,7 @@ start: build
 	docker run -d -p 8080:80 nfl-rushing-frontend
 
 test:
-	ng test
+	ng test --watch=false
 
 ci: build test
 

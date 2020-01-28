@@ -4,3 +4,8 @@ build:
 
 start: build
 	docker-compose up -d 
+	
+test:
+	cd ./frontend/nfl-rushing && $(MAKE) test
+	cd ./backend && $(MAKE) test
+
