@@ -9,3 +9,5 @@ test:
 	cd ./frontend/nfl-rushing && $(MAKE) test
 	cd ./backend && $(MAKE) test
 
+ci: test build
+
