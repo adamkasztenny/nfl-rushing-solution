@@ -1,0 +1,22 @@
+<mat-table class="mat-elevation-z8" [dataSource]="rushingStatistics">
+  
+    <ng-container matColumnDef="player">
+        <div *matHeaderCellDef>Player</div>
+        <div *matCellDef="let rushingStatistic">{{rushingStatistic.player}}</div>
+    </ng-container>
+  
+    <ng-container matColumnDef="team">
+        <div *matHeaderCellDef>Team</div>
+        <div *matCellDef="let rushingStatistic">{{rushingStatistic.team}}</div>
+    </ng-container>
+  
+    <ng-container matColumnDef="position">
+        <div *matHeaderCellDef>Position</div>
+        <div *matCellDef="let rushingStatistic">{{rushingStatistic.team}}</div>
+    </ng-container>
+    
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+
