@@ -40,7 +40,16 @@ export class RushingStatisticsTableComponent implements OnInit {
     this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
       this.dataSource = new MatTableDataSource(rushingStatistics);
       this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = this.filterPredicate;
     });
   }
 
+  applyFilter(nameFilter: string) {
+    const filter = nameFilter.trim().toLowerCase();
+    this.dataSource.filter = filter;
+  }
+
+  private filterPredicate(rushingStatistic: RushingStatistic, filter: string): boolean {
+    return rushingStatistic.player.toLowerCase().includes(filter);
+  }
 }
