@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RushingStatisticService } from '../rushing-statistic.service';
 import { RushingStatistic } from '../domain/rushing-statistic';
-import { Observable } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-rushing-statistics-table',
@@ -9,7 +10,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./rushing-statistics-table.component.css']
 })
 export class RushingStatisticsTableComponent implements OnInit {
-  rushingStatistics: Observable<RushingStatistic[]>;
+  dataSource: MatTableDataSource<RushingStatistic>
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   displayedColumns: string[] = [
 	'player',
 	'team',
@@ -24,6 +28,7 @@ export class RushingStatisticsTableComponent implements OnInit {
 	'rushingYardsAveragePerAttempt',
 	'team',
 	'totalRushingTouchdowns',
+  	'longestRush',
 	'totalRushingYards',
 	'yardsPerGame',
   ];
@@ -32,7 +37,10 @@ export class RushingStatisticsTableComponent implements OnInit {
   constructor(private rushingStatisticService: RushingStatisticService) { }
 
   ngOnInit() {
-    this.rushingStatistics = this.rushingStatisticService.fetch(this.page);
+    this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
+      this.dataSource = new MatTableDataSource(rushingStatistics);
+      this.dataSource.sort = this.sort;
+    });
   }
 
 }
