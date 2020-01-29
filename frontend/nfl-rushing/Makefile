@@ -1,5 +1,5 @@
 start_development:
-	ng serve
+	ng serve --proxy-config proxy.conf.json
 
 build:
 	ng build --prod --aot
