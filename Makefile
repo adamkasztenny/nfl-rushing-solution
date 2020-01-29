@@ -3,7 +3,7 @@ build:
 	cd ./backend && $(MAKE) build
 
 start: build
-	docker-compose up -d 
+	docker-compose up -d --force-recreate --build
 	
 test:
 	cd ./frontend/nfl-rushing && $(MAKE) test
