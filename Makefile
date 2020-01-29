@@ -1,8 +1,7 @@
 build:
-	cd ./frontend/nfl-rushing && $(MAKE) build
-	cd ./backend && $(MAKE) build
+	docker-compose build
 
-start: build
+start:
 	docker-compose up -d --force-recreate --build
 	
 test:
