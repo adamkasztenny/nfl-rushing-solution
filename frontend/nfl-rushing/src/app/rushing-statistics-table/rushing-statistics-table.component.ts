@@ -3,6 +3,7 @@ import { RushingStatisticService } from '../rushing-statistic.service';
 import { RushingStatistic } from '../domain/rushing-statistic';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
 @Component({
   selector: 'app-rushing-statistics-table',
@@ -47,6 +48,14 @@ export class RushingStatisticsTableComponent implements OnInit {
   applyFilter(nameFilter: string) {
     const filter = nameFilter.trim().toLowerCase();
     this.dataSource.filter = filter;
+  }
+
+  exportToCsv() {
+    const filename = 'Rushing Statistics';
+    const options = {
+    	headers: this.displayedColumns,
+    };
+    new AngularCsv(this.dataSource.filteredData, filename, options);
   }
 
   private filterPredicate(rushingStatistic: RushingStatistic, filter: string): boolean {
