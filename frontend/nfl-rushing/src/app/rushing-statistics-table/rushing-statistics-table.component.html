@@ -1,18 +1,78 @@
-<table mat-table class="mat-elevation-z8" [dataSource]="rushingStatistics">
+<table mat-table class="mat-elevation-z8" [dataSource]="rushingStatistics" matSort>
   
     <ng-container matColumnDef="player">
         <th mat-header-cell *matHeaderCellDef>Player</th>
         <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.player}}</td>
     </ng-container>
-  
+
     <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef>Team</th>
         <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.team}}</td>
     </ng-container>
-  
+
     <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef>Position</th>
+        <th mat-header-cell *matHeaderCellDef>Pos</th>
         <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.position}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="rushingAttemptsPerGameAverage">
+        <th mat-header-cell *matHeaderCellDef>Att/G</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingAttemptsPerGameAverage}}</td>
+    </ng-container>
+ 
+    <ng-container matColumnDef="rushingAttempts">
+        <th mat-header-cell *matHeaderCellDef>Att</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingAttempts}}</td>
+    </ng-container>
+ 
+    <ng-container matColumnDef="totalRushingYards">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Yrds</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.totalRushingYards}}</td>
+    </ng-container>
+ 
+    <ng-container matColumnDef="rushingYardsAveragePerAttempt">
+        <th mat-header-cell *matHeaderCellDef>Avg</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingYardsAveragePerAttempt}}</td>
+    </ng-container>
+ 
+    <ng-container matColumnDef="yardsPerGame">
+        <th mat-header-cell *matHeaderCellDef>Yds/G</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.yardsPerGame}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="totalRushingTouchdowns">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>TD</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.totalRushingTouchdowns}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="longestRush">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lng</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.longestRush}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="rushingFirstDowns">
+        <th mat-header-cell *matHeaderCellDef>1st</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingFirstDowns}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="rushingFirstDownPercentage">
+        <th mat-header-cell *matHeaderCellDef>1st&#37;</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingFirstDownPercentage}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="rushingTwentyYardsEach">
+        <th mat-header-cell *matHeaderCellDef>20+</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingTwentyYardsEach}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="rushingFortyYardsEach">
+        <th mat-header-cell *matHeaderCellDef>40+</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingFortyYardsEach}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="rushingFumbles">
+        <th mat-header-cell *matHeaderCellDef>FUM</th>
+        <td mat-cell *matCellDef="let rushingStatistic">{{rushingStatistic.rushingFumbles}}</td>
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

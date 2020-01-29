@@ -14,6 +14,18 @@ export class RushingStatisticsTableComponent implements OnInit {
 	'player',
 	'team',
 	'position',
+	'rushingAttempts',
+	'rushingAttemptsPerGameAverage',
+	'rushingFirstDownPercentage',
+	'rushingFirstDowns',
+	'rushingFortyYardsEach',
+	'rushingFumbles',
+	'rushingTwentyYardsEach',
+	'rushingYardsAveragePerAttempt',
+	'team',
+	'totalRushingTouchdowns',
+	'totalRushingYards',
+	'yardsPerGame',
   ];
   private page: number = 1;
 
