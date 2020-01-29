@@ -9,7 +9,8 @@ import { GraphQLModule } from './graphql.module';
 import { RushingStatisticsTableComponent } from './rushing-statistics-table/rushing-statistics-table.component';
 import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatToolbarModule,
          MatSortModule, MatTableModule } from "@angular/material";
-
+import {MatButtonModule} from '@angular/material/button'; 
+	 
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatToolba
     GraphQLModule,
 
     MatToolbarModule,
+    MatButtonModule,
     MatInputModule,
     MatTableModule,
     MatPaginatorModule,
