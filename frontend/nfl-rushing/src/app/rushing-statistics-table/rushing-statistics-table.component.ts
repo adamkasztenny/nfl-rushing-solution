@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./rushing-statistics-table.component.css']
 })
 export class RushingStatisticsTableComponent implements OnInit {
-  private rushingStatistics: Observable<RushingStatistic[]>;
-  private displayedColumns: string[] = [
+  rushingStatistics: Observable<RushingStatistic[]>;
+  displayedColumns: string[] = [
 	'player',
 	'team',
 	'position',
