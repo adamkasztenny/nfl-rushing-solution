@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { RushingStatisticService } from '../rushing-statistic.service';
 import { RushingStatistic } from '../domain/rushing-statistic';
 import { MatSort } from '@angular/material/sort';
@@ -11,8 +11,9 @@ import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
   styleUrls: ['./rushing-statistics-table.component.css']
 })
 export class RushingStatisticsTableComponent implements OnInit {
-  dataSource: MatTableDataSource<RushingStatistic>
-
+  dataSource: MatTableDataSource<RushingStatistic>;
+  page: number = 1;
+ 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   displayedColumns: string[] = [
@@ -33,16 +34,11 @@ export class RushingStatisticsTableComponent implements OnInit {
 	'totalRushingYards',
 	'yardsPerGame',
   ];
-  private page: number = 1;
 
   constructor(private rushingStatisticService: RushingStatisticService) { }
 
   ngOnInit() {
-    this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
-      this.dataSource = new MatTableDataSource(rushingStatistics);
-      this.dataSource.sort = this.sort;
-      this.dataSource.filterPredicate = this.filterPredicate;
-    });
+    this.loadRushingStatisticsForCurrentPage();
   }
 
   applyFilter(nameFilter: string) {
@@ -56,6 +52,24 @@ export class RushingStatisticsTableComponent implements OnInit {
     	headers: this.displayedColumns,
     };
     new AngularCsv(this.dataSource.filteredData, filename, options);
+  }
+
+  nextPage() {
+   this.page++;
+   this.loadRushingStatisticsForCurrentPage();
+  }
+  
+  previousPage() {
+   this.page--;
+   this.loadRushingStatisticsForCurrentPage();
+  }
+
+  private loadRushingStatisticsForCurrentPage() {
+    this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
+      this.dataSource = new MatTableDataSource(rushingStatistics);
+      this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = this.filterPredicate;
+    });
   }
 
   private filterPredicate(rushingStatistic: RushingStatistic, filter: string): boolean {

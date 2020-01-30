@@ -2,7 +2,7 @@ table {
   width: 100%;
 }
 
-.filtering {
+.filtering, .navigation {
   margin: 1.5em;
 }
 
@@ -10,3 +10,10 @@ table {
   margin-left: 2em;
 }
 
+.navigation .previous {
+  left: 0;
+}
+
+.navigation .next {
+  right: 0;
+}

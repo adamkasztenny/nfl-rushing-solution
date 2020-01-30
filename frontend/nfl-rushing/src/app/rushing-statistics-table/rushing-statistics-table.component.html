@@ -86,3 +86,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
+<div class="navigation">
+    <button *ngIf="page > 1" mat-raised-button (click)="previousPage()" color="primary" class="previous">Previous</button>
+    <button mat-raised-button (click)="nextPage()" color="primary" class="next">Next</button>
+</div>
