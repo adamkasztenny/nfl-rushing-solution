@@ -68,11 +68,20 @@ export class RushingStatisticsTableComponent implements OnInit {
     this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
       this.dataSource = new MatTableDataSource(rushingStatistics);
       this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
       this.dataSource.filterPredicate = this.filterPredicate;
     });
   }
 
   private filterPredicate(rushingStatistic: RushingStatistic, filter: string): boolean {
     return rushingStatistic.player.toLowerCase().includes(filter);
+  }
+  
+  private sortingDataAccessor(rushingStatistic: RushingStatistic, property: string): (string | number) {
+    const isLongestRushWithTouchdown = property === 'longestRush'; 
+    if (isLongestRushWithTouchdown) {
+      return Number(rushingStatistic.longestRush.replace("T", ""));
+    }
+    return rushingStatistic[property];
   }
 }
