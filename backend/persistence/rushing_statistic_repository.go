@@ -3,6 +3,7 @@ package persistence
 import (
 	"encoding/json"
 	"io/ioutil"
+	"strings"
 	"sync"
 
 	"github.com/adamkasztenny/nfl-rushing/domain"
@@ -23,25 +24,45 @@ func CreateRushingStatisticRepository(filename string) RushingStatisticRepositor
 	return repository
 }
 
-func (repository *RushingStatisticRepository) Get(limit, offset int) []domain.RushingStatistic {
+func (repository *RushingStatisticRepository) Get(limit, offset int, nameFilter string) []domain.RushingStatistic {
 	repository.initializeRushingStatisticsCache()
-	return repository.getPaginatedSubset(limit, offset)
+	if nameFilter != "" {
+		filteredRushingStatistics := repository.filteredRushingStatistics(nameFilter)
+		return repository.getPaginatedSubset(filteredRushingStatistics, limit, offset)
+	}
+	return repository.getPaginatedSubset(repository.rushingStatistics, limit, offset)
 }
 
-func (repository *RushingStatisticRepository) getPaginatedSubset(limit, offset int) []domain.RushingStatistic {
-	totalSize := len(repository.rushingStatistics)
+func (repository *RushingStatisticRepository) getPaginatedSubset(rushingStatistics []domain.RushingStatistic, limit, offset int) []domain.RushingStatistic {
+	totalSize := len(rushingStatistics)
 
 	startingIndex := offset * limit
-	if startingIndex >= totalSize {
+	if totalSize == 0 || startingIndex >= totalSize {
 		return []domain.RushingStatistic{}
 	}
 
 	endingIndex := startingIndex + limit
 	if endingIndex >= totalSize {
-		return repository.rushingStatistics[startingIndex:]
+		return rushingStatistics[startingIndex:]
 	}
 
-	return repository.rushingStatistics[startingIndex:endingIndex]
+	return rushingStatistics[startingIndex:endingIndex]
+}
+
+func (repository *RushingStatisticRepository) filteredRushingStatistics(nameFilter string) []domain.RushingStatistic {
+	var filteredRushingStatistics []domain.RushingStatistic
+	for _, rushingStatistic := range repository.rushingStatistics {
+		if repository.filterMatches(nameFilter, rushingStatistic) {
+			filteredRushingStatistics = append(filteredRushingStatistics, rushingStatistic)
+		}
+	}
+	return filteredRushingStatistics
+}
+
+func (repository *RushingStatisticRepository) filterMatches(nameFilter string, rushingStatistic domain.RushingStatistic) bool {
+	lowercaseName := strings.TrimSpace(strings.ToLower(rushingStatistic.Player))
+	lowercaseNameFilter := strings.TrimSpace(strings.ToLower(nameFilter))
+	return strings.Contains(lowercaseName, lowercaseNameFilter)
 }
 
 func (repository *RushingStatisticRepository) initializeRushingStatisticsCache() {

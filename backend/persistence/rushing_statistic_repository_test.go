@@ -29,7 +29,7 @@ func (suite *rushingStatisticsRepositorySuite) TestInitialization() {
 func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatisticsIfThereAreNone() {
 	repository := CreateRushingStatisticRepository("test-empty-rushing-statistics.json")
 
-	rushingStatistics := repository.Get(1, 0)
+	rushingStatistics := repository.Get(1, 0, "")
 
 	assert.Empty(suite.T(), rushingStatistics)
 }
@@ -37,18 +37,59 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatistics
 func (suite *rushingStatisticsRepositorySuite) TestReturnsASingleRushingStatistic() {
 	repository := CreateRushingStatisticRepository(suite.filename)
 
-	rushingStatistics := repository.Get(1, 0)
+	rushingStatistics := repository.Get(1, 0, "")
 
 	assert.True(suite.T(), len(rushingStatistics) == 1)
 	expectedRushingStatistic := suite.expectedRushingStatistics[0]
 	assert.Equal(suite.T(), expectedRushingStatistic, rushingStatistics[0])
 }
 
+func (suite *rushingStatisticsRepositorySuite) TestReturnsASingleRushingStatisticWithAFilterApplied() {
+	repository := CreateRushingStatisticRepository(suite.filename)
+
+	rushingStatistics := repository.Get(1, 0, "reek")
+
+	assert.True(suite.T(), len(rushingStatistics) == 1)
+	expectedRushingStatistic := suite.expectedRushingStatistics[2]
+	assert.Equal(suite.T(), expectedRushingStatistic, rushingStatistics[0])
+}
+
+func (suite *rushingStatisticsRepositorySuite) TestReturnsASingleRushingStatisticWithAFilterAppliedRegardlessOfCase() {
+	repository := CreateRushingStatisticRepository(suite.filename)
+
+	rushingStatistics := repository.Get(1, 0, "tYreek")
+
+	assert.True(suite.T(), len(rushingStatistics) == 1)
+	expectedRushingStatistic := suite.expectedRushingStatistics[2]
+	assert.Equal(suite.T(), expectedRushingStatistic, rushingStatistics[0])
+}
+
+func (suite *rushingStatisticsRepositorySuite) TestReturnsNoRushingStatisticsIfTheFilterDoesNotMatch() {
+	repository := CreateRushingStatisticRepository(suite.filename)
+
+	rushingStatistics := repository.Get(1, 0, "nonMatching")
+
+	assert.Empty(suite.T(), rushingStatistics)
+}
+
 func (suite *rushingStatisticsRepositorySuite) TestReturnsPaginatedRushingStatistics() {
 	repository := CreateRushingStatisticRepository(suite.filename)
 
-	firstPage := repository.Get(2, 0)
-	lastPage := repository.Get(2, 1)
+	firstPage := repository.Get(2, 0, "")
+	lastPage := repository.Get(2, 1, "")
+
+	assert.True(suite.T(), len(firstPage) == 2)
+	assert.ElementsMatch(suite.T(), suite.expectedRushingStatistics[0:2], firstPage)
+
+	assert.True(suite.T(), len(lastPage) == 1)
+	assert.Equal(suite.T(), suite.expectedRushingStatistics[2], lastPage[0])
+}
+
+func (suite *rushingStatisticsRepositorySuite) TestReturnsPaginatedRushingStatisticsWithAFilter() {
+	repository := CreateRushingStatisticRepository(suite.filename)
+
+	firstPage := repository.Get(2, 0, "hill")
+	lastPage := repository.Get(2, 1, "hill")
 
 	assert.True(suite.T(), len(firstPage) == 2)
 	assert.ElementsMatch(suite.T(), suite.expectedRushingStatistics[0:2], firstPage)
@@ -60,7 +101,7 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsPaginatedRushingStatis
 func (suite *rushingStatisticsRepositorySuite) TestReturnsAnEmptySliceIfThePageIsOutOfBounds() {
 	repository := CreateRushingStatisticRepository(suite.filename)
 
-	result := repository.Get(2, 5000)
+	result := repository.Get(2, 5000, "")
 
 	assert.Empty(suite.T(), result)
 }
@@ -68,7 +109,7 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsAnEmptySliceIfThePageI
 func (suite *rushingStatisticsRepositorySuite) TestReturnsAllRushingStatisticsIfNotPaginatedProperly() {
 	repository := CreateRushingStatisticRepository(suite.filename)
 
-	rushingStatistics := repository.Get(3, 0)
+	rushingStatistics := repository.Get(3, 0, "")
 
 	assert.True(suite.T(), len(rushingStatistics) == 3)
 	assert.ElementsMatch(suite.T(), suite.expectedRushingStatistics, rushingStatistics)
@@ -77,18 +118,18 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsAllRushingStatisticsIf
 func (suite *rushingStatisticsRepositorySuite) TestCachesRushingStatistics() {
 	repository := CreateRushingStatisticRepository(suite.filename)
 
-	rushingStatistics := repository.Get(3, 0)
+	rushingStatistics := repository.Get(3, 0, "")
 	assert.True(suite.T(), len(rushingStatistics) == 3)
 
 	repository.filename = "non-existent-file.json"
-	rushingStatistics = repository.Get(3, 0)
+	rushingStatistics = repository.Get(3, 0, "")
 	assert.True(suite.T(), len(rushingStatistics) == 3)
 }
 
 func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatisticsIfTheFileDoesNotExist() {
 	repository := CreateRushingStatisticRepository("non-existent-file.json")
 
-	rushingStatistics := repository.Get(1, 0)
+	rushingStatistics := repository.Get(1, 0, "")
 
 	assert.Empty(suite.T(), rushingStatistics)
 }
@@ -96,7 +137,7 @@ func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatistics
 func (suite *rushingStatisticsRepositorySuite) TestReturnsEmptyRushingStatisticsIfTheFileDoesNotContainValidJSON() {
 	repository := CreateRushingStatisticRepository("test-empty-file.json")
 
-	rushingStatistics := repository.Get(1, 0)
+	rushingStatistics := repository.Get(1, 0, "")
 
 	assert.Empty(suite.T(), rushingStatistics)
 }
@@ -108,7 +149,7 @@ func TestRushingStatisticsRepositorySuite(t *testing.T) {
 func (suite *rushingStatisticsRepositorySuite) setupExpectedRushingStatistics() {
 	suite.expectedRushingStatistics = []domain.RushingStatistic{
 		{
-			Player:                        "Joe Banyard",
+			Player:                        "Joe Yardhill",
 			Team:                          "JAX",
 			Position:                      "RB",
 			RushingAttempts:               2,
@@ -125,7 +166,7 @@ func (suite *rushingStatisticsRepositorySuite) setupExpectedRushingStatistics() 
 			RushingFumbles:                0,
 		},
 		{
-			Player:                        "Breshad Perriman",
+			Player:                        "Breshad Hillcrest",
 			Team:                          "BAL",
 			Position:                      "WR",
 			RushingAttempts:               1,

@@ -27,16 +27,16 @@ func (suite *rushingStatisticsServiceSuite) TestInitialization() {
 func (suite *rushingStatisticsServiceSuite) TestReturnsPaginatedResultStartingFromPageOne() {
 	service := CreateRushingStatisticService()
 
-	page := service.Get(1)
+	page := service.Get(1, "")
 	suite.checkExpectedPageSize(page)
 
-	page = service.Get(2)
+	page = service.Get(2, "")
 	suite.checkExpectedPageSize(page)
 
-	page = service.Get(3)
+	page = service.Get(3, "")
 	suite.checkExpectedPageSize(page)
 
-	page = service.Get(4)
+	page = service.Get(4, "")
 	suite.checkExpectedPageSize(page)
 }
 

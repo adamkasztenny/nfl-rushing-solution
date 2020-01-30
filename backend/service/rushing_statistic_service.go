@@ -7,7 +7,7 @@ import (
 )
 
 type RushingStatisticServiceInterface interface {
-	Get(pageNumber int) []domain.RushingStatistic
+	Get(pageNumber int, nameFilter string) []domain.RushingStatistic
 }
 
 type RushingStatisticService struct {
@@ -22,6 +22,6 @@ func CreateRushingStatisticService() RushingStatisticServiceInterface {
 	return &RushingStatisticService{pageSize: pageSize, repository: repository}
 }
 
-func (service *RushingStatisticService) Get(pageNumber int) []domain.RushingStatistic {
-	return service.repository.Get(service.pageSize, pageNumber-1)
+func (service *RushingStatisticService) Get(pageNumber int, nameFilter string) []domain.RushingStatistic {
+	return service.repository.Get(service.pageSize, pageNumber-1, nameFilter)
 }
