@@ -1,16 +1,16 @@
-start_development:
+install:
+	npm install
+
+start_development: install
 	ng serve --proxy-config proxy.conf.json
 
 build:
-	npm install
-	rm -rf dist
-	ng build --prod --aot
 	docker build --no-cache -t nfl-rushing-frontend .
 
-test:
+test: install
 	ng test --watch=false
 
-lint:
+lint: install
 	ng lint
 
 ci: build test
