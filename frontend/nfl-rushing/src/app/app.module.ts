@@ -8,9 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { RushingStatisticsTableComponent } from './rushing-statistics-table/rushing-statistics-table.component';
 import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatToolbarModule,
-         MatSortModule, MatTableModule } from "@angular/material";
-import {MatButtonModule} from '@angular/material/button'; 
-	 
+         MatSortModule, MatTableModule } from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -16,9 +16,9 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<RushingStatistic>;
 
   private page: number;
-  private nameFilter: string = '';
+  private nameFilter = '';
   private pageSize = 20;
- 
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('input', {static: true}) input: ElementRef;
 
@@ -64,12 +64,12 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
    this.page++;
    this.loadRushingStatisticsForCurrentPage();
   }
-  
+
   previousPage() {
    this.page--;
    this.loadRushingStatisticsForCurrentPage();
   }
-  
+
   shouldShowPreviousButton() {
     return this.page > 1;
   }
@@ -77,7 +77,7 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   shouldShowNextButton() {
     return this.dataSource.data.length === this.pageSize;
   }
-  
+
   private loadRushingStatisticsForCurrentPage() {
     this.rushingStatisticService.fetch(this.page, this.nameFilter).subscribe(rushingStatistics => {
       this.initializeDataSource(rushingStatistics);
@@ -96,7 +96,7 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
 	debounceTime(200),
 	distinctUntilChanged(),
 	tap(() => {
-	  this.nameFilter = this.input.nativeElement.value; 
+	  this.nameFilter = this.input.nativeElement.value;
           this.resetPage()
           this.loadRushingStatisticsForCurrentPage();
 	})).subscribe();
@@ -107,9 +107,9 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   }
 
   private sortingDataAccessor(rushingStatistic: RushingStatistic, property: string): (string | number) {
-    const isLongestRushWithTouchdown = property === 'longestRush'; 
+    const isLongestRushWithTouchdown = property === 'longestRush';
     if (isLongestRushWithTouchdown) {
-      return Number(rushingStatistic.longestRush.replace("T", ""));
+      return Number(rushingStatistic.longestRush.replace('T', ''));
     }
     return rushingStatistic[property];
   }
