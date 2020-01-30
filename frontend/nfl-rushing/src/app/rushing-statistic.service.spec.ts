@@ -35,9 +35,10 @@ describe('RushingStatisticService', () => {
 
   it('should return an Observable of Rushing Statistics', (done: DoneFn) => {
     const service: RushingStatisticService = TestBed.get(RushingStatisticService);
-    const page = 1
+    const page = 1;
+    const filter = 'filter';
 
-    const result: Observable<RushingStatistic[]> = service.fetch(page)
+    const result: Observable<RushingStatistic[]> = service.fetch(page, filter)
 
     result.subscribe(rushingStatistics => {
       expect(rushingStatistics).toEqual(fakeRushingStatistics);

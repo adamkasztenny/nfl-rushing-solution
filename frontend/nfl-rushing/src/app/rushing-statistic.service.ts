@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 })
 export class RushingStatisticService {
   static query = gql`
-	query RushingStatistics($page: int64!) {
-	  rushingStatistics(page: $page) {
+	query RushingStatistics($page: int64!, $nameFilter: string) {
+	  rushingStatistics(page: $page, nameFilter: $nameFilter) {
 	      longestRush
 	      player
 	      position
@@ -33,8 +33,8 @@ export class RushingStatisticService {
 
   constructor(private apollo: Apollo) { }
 
-  fetch(page: number): Observable<RushingStatistic[]> {
-    return this.apollo.watchQuery({query: RushingStatisticService.query, variables: {page}})
+  fetch(page: number, nameFilter: string): Observable<RushingStatistic[]> {
+    return this.apollo.watchQuery({query: RushingStatisticService.query, variables: {page: page, nameFilter: nameFilter}})
       .valueChanges.pipe(map(({data}) => this.toRushingStatistics(data['rushingStatistics'])));
   }
 

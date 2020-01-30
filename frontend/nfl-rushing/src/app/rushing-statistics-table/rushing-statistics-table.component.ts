@@ -1,20 +1,25 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { RushingStatisticService } from '../rushing-statistic.service';
 import { RushingStatistic } from '../domain/rushing-statistic';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
+import { fromEvent } from 'rxjs';
+import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rushing-statistics-table',
   templateUrl: './rushing-statistics-table.component.html',
   styleUrls: ['./rushing-statistics-table.component.css']
 })
-export class RushingStatisticsTableComponent implements OnInit {
+export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<RushingStatistic>;
-  private page: number = 1;
+
+  private page: number;
+  private nameFilter: string = '';
  
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('input', {static: true}) input: ElementRef;
 
   displayedColumns: string[] = [
 	'player',
@@ -38,12 +43,12 @@ export class RushingStatisticsTableComponent implements OnInit {
   constructor(private rushingStatisticService: RushingStatisticService) { }
 
   ngOnInit() {
+    this.resetPage();
     this.loadRushingStatisticsForCurrentPage();
   }
 
-  applyFilter(nameFilter: string) {
-    const filter = nameFilter.trim().toLowerCase();
-    this.dataSource.filter = filter;
+  ngAfterViewInit() {
+    this.enableFiltration();
   }
 
   exportToCsv() {
@@ -69,7 +74,7 @@ export class RushingStatisticsTableComponent implements OnInit {
   }
 
   private loadRushingStatisticsForCurrentPage() {
-    this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
+    this.rushingStatisticService.fetch(this.page, this.nameFilter).subscribe(rushingStatistics => {
       this.initializeDataSource(rushingStatistics);
     });
   }
@@ -78,13 +83,25 @@ export class RushingStatisticsTableComponent implements OnInit {
     this.dataSource = new MatTableDataSource(rushingStatistics);
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
-    this.dataSource.filterPredicate = this.filterPredicate;
   }
 
-  private filterPredicate(rushingStatistic: RushingStatistic, filter: string): boolean {
-    return rushingStatistic.player.toLowerCase().includes(filter);
+  private enableFiltration() {
+	  console.debug('setup');
+    fromEvent(this.input.nativeElement,'keyup')
+      .pipe(
+	debounceTime(200),
+	distinctUntilChanged(),
+	tap(() => {
+	  this.nameFilter = this.input.nativeElement.value; 
+          this.resetPage()
+          this.loadRushingStatisticsForCurrentPage();
+	})).subscribe();
   }
-  
+
+  private resetPage() {
+    this.page = 1;
+  }
+
   private sortingDataAccessor(rushingStatistic: RushingStatistic, property: string): (string | number) {
     const isLongestRushWithTouchdown = property === 'longestRush'; 
     if (isLongestRushWithTouchdown) {
