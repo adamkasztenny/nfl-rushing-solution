@@ -88,5 +88,5 @@
 
 <div class="navigation">
     <button *ngIf="shouldShowPreviousButton()" mat-raised-button (click)="previousPage()" color="primary" class="previous">Previous</button>
-    <button mat-raised-button (click)="nextPage()" color="primary" class="next">Next</button>
+    <button *ngIf="shouldShowNextButton()" mat-raised-button (click)="nextPage()" color="primary" class="next">Next</button>
 </div>

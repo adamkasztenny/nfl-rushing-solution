@@ -17,6 +17,7 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
 
   private page: number;
   private nameFilter: string = '';
+  private pageSize = 20;
  
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('input', {static: true}) input: ElementRef;
@@ -68,11 +69,15 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
    this.page--;
    this.loadRushingStatisticsForCurrentPage();
   }
-
+  
   shouldShowPreviousButton() {
     return this.page > 1;
   }
 
+  shouldShowNextButton() {
+    return this.dataSource.data.length === this.pageSize;
+  }
+  
   private loadRushingStatisticsForCurrentPage() {
     this.rushingStatisticService.fetch(this.page, this.nameFilter).subscribe(rushingStatistics => {
       this.initializeDataSource(rushingStatistics);
@@ -86,7 +91,6 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   }
 
   private enableFiltration() {
-	  console.debug('setup');
     fromEvent(this.input.nativeElement,'keyup')
       .pipe(
 	debounceTime(200),
