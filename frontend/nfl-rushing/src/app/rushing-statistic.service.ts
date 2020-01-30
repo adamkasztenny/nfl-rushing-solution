@@ -35,7 +35,7 @@ export class RushingStatisticService {
 
   fetch(page: number, nameFilter: string): Observable<RushingStatistic[]> {
     return this.apollo.watchQuery({query: RushingStatisticService.query, variables: {page, nameFilter}})
-      .valueChanges.pipe(map(({data}) => this.toRushingStatistics(data.rushingStatistics)));
+      .valueChanges.pipe(map(({data}) => this.toRushingStatistics(data['rushingStatistics'])));
   }
 
   toRushingStatistics(rushingStatistics: object[]): RushingStatistic[] {
