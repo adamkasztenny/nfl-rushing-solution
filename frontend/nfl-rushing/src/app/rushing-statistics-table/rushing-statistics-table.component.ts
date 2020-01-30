@@ -12,7 +12,7 @@ import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 })
 export class RushingStatisticsTableComponent implements OnInit {
   dataSource: MatTableDataSource<RushingStatistic>;
-  page: number = 1;
+  private page: number = 1;
  
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -66,11 +66,15 @@ export class RushingStatisticsTableComponent implements OnInit {
 
   private loadRushingStatisticsForCurrentPage() {
     this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
-      this.dataSource = new MatTableDataSource(rushingStatistics);
-      this.dataSource.sort = this.sort;
-      this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
-      this.dataSource.filterPredicate = this.filterPredicate;
+      this.initializeDataSource(rushingStatistics);
     });
+  }
+
+  private initializeDataSource(rushingStatistics: RushingStatistic[]) {
+    this.dataSource = new MatTableDataSource(rushingStatistics);
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = this.sortingDataAccessor;
+    this.dataSource.filterPredicate = this.filterPredicate;
   }
 
   private filterPredicate(rushingStatistic: RushingStatistic, filter: string): boolean {
