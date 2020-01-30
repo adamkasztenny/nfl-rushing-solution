@@ -64,6 +64,10 @@ export class RushingStatisticsTableComponent implements OnInit {
    this.loadRushingStatisticsForCurrentPage();
   }
 
+  shouldShowPreviousButton() {
+    return this.page > 1;
+  }
+
   private loadRushingStatisticsForCurrentPage() {
     this.rushingStatisticService.fetch(this.page).subscribe(rushingStatistics => {
       this.initializeDataSource(rushingStatistics);
