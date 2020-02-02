@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { MatToolbarModule } from '@angular/material';
@@ -11,10 +10,7 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        MatToolbarModule,
-      ],
+      imports: [MatToolbarModule],
       declarations: [
         AppComponent,
         MockComponent(RushingStatisticsTableComponent),
