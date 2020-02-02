@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatInputModule, MatPaginatorModule,
          MatSortModule, MatTableModule } from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
@@ -184,13 +184,44 @@ describe('RushingStatisticsTableComponent', () => {
       const noFilter = '';
       expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(previousPage, noFilter);
     });
-
-    function nextButton() {
-      return fixture.debugElement.query(By.css('.navigation .next')); 
-    } 
     
     function previousButton() {
       return fixture.debugElement.query(By.css('.navigation .previous')); 
     } 
   });
+
+  describe('Filtering', () => {
+    const firstPage = 1;
+
+    it('should filter rushing statistics', fakeAsync(() => {
+      const filter = 'some filter';
+      applyFilter(filter);
+
+      expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(firstPage, filter);
+    }));
+
+    it('should reset the current page after filtering', fakeAsync(() => {
+      nextButton().nativeElement.click();
+      fixture.detectChanges();
+
+      const filter = 'some filter';
+      applyFilter(filter);
+
+      expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(firstPage, filter);
+    }));
+
+    function applyFilter(filter: string) {
+      const input = fixture.debugElement.query(By.css('.filtering input')).nativeElement; 
+      input.value = filter;
+      input.dispatchEvent(new Event('keyup'));
+
+      const waitTime = 200;
+      tick(waitTime);
+      fixture.detectChanges();
+    }
+  });
+  
+  function nextButton() {
+    return fixture.debugElement.query(By.css('.navigation .next')); 
+  } 
 });
