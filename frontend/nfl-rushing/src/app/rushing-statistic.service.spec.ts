@@ -16,9 +16,9 @@ describe('RushingStatisticService', () => {
     TestBed.configureTestingModule({
         imports: [ApolloTestingModule],
       });
-      controller = TestBed.get(ApolloTestingController);
+    controller = TestBed.get(ApolloTestingController);
 
-      fakeRushingStatistics = [
+    fakeRushingStatistics = [
 	new RushingStatistic({player: 'Player 1'}),
 	new RushingStatistic({player: 'Player 2'}),
       ];
@@ -38,7 +38,7 @@ describe('RushingStatisticService', () => {
     const page = 1;
     const filter = 'filter';
 
-    const result: Observable<RushingStatistic[]> = service.fetch(page, filter)
+    const result: Observable<RushingStatistic[]> = service.fetch(page, filter);
 
     result.subscribe(rushingStatistics => {
       expect(rushingStatistics).toEqual(fakeRushingStatistics);

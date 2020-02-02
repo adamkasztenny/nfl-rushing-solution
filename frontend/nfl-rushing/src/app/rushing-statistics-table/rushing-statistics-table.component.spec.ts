@@ -18,7 +18,7 @@ describe('RushingStatisticsTableComponent', () => {
   const noFilter = '';
 
   beforeEach(async(() => {
-    rushingStatisticServiceStub = jasmine.createSpyObj('RushingStatisticService', ['fetch'])
+    rushingStatisticServiceStub = jasmine.createSpyObj('RushingStatisticService', ['fetch']);
     rushingStatisticServiceStub.fetch.and.returnValue(of(initialRushingStatistics));
 
     TestBed.configureTestingModule({

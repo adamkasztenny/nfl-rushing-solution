@@ -91,14 +91,14 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   }
 
   private enableFiltration() {
-    fromEvent(this.input.nativeElement,'keyup')
+    fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
 	debounceTime(200),
 	distinctUntilChanged(),
 	tap(() => {
 	  this.nameFilter = this.input.nativeElement.value;
-          this.resetPage()
-          this.loadRushingStatisticsForCurrentPage();
+   this.resetPage();
+   this.loadRushingStatisticsForCurrentPage();
 	})).subscribe();
   }
 

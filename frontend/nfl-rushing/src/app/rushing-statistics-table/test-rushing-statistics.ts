@@ -1,6 +1,6 @@
 import { RushingStatistic } from '../domain/rushing-statistic';
 
-export const TEST_RUSHING_STATISTICS:  RushingStatistic[] = [
+export const TEST_RUSHING_STATISTICS: RushingStatistic[] = [
   new RushingStatistic({
     player: 'Joe Banyard',
     team: 'JAX',

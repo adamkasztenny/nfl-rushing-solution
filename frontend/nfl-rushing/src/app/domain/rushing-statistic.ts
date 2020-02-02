@@ -16,6 +16,6 @@ export class RushingStatistic {
   yardsPerGame = 0;
 
   constructor(data: Partial<RushingStatistic> = {}) {
-    Object.assign(this, data)
+    Object.assign(this, data);
   }
 }
