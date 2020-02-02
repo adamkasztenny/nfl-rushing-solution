@@ -13,7 +13,9 @@ describe('RushingStatisticsTableComponent', () => {
   let component: RushingStatisticsTableComponent;
   let fixture: ComponentFixture<RushingStatisticsTableComponent>;
   let rushingStatisticServiceStub: jasmine.SpyObj<RushingStatisticService>;
+
   const initialRushingStatistics = TEST_RUSHING_STATISTICS.slice(0, 20);
+  const noFilter = '';
 
   beforeEach(async(() => {
     rushingStatisticServiceStub = jasmine.createSpyObj('RushingStatisticService', ['fetch'])
@@ -47,7 +49,6 @@ describe('RushingStatisticsTableComponent', () => {
   it('should load the initial rushing statistics', () => {
     expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledTimes(1);  
     const initialPage = 1;
-    const noFilter = '';
     expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(initialPage, noFilter);  
   });
 
@@ -151,7 +152,6 @@ describe('RushingStatisticsTableComponent', () => {
       fixture.detectChanges();
     
       const nextPage = 2;
-      const noFilter = '';
       expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(nextPage, noFilter);
     });
     
@@ -181,7 +181,6 @@ describe('RushingStatisticsTableComponent', () => {
       fixture.detectChanges();
 
       const previousPage = 1;
-      const noFilter = '';
       expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(previousPage, noFilter);
     });
     
@@ -218,6 +217,44 @@ describe('RushingStatisticsTableComponent', () => {
       const waitTime = 200;
       tick(waitTime);
       fixture.detectChanges();
+    }
+  });
+
+  describe('Sorting', () => {
+    it('should sort by total rushing touchdowns', () => {
+      sortBy('TD');
+      expect(firstRow()).toContain('0');
+      
+      sortBy('TD');
+      expect(firstRow()).toContain('9');
+    });
+
+    it('should sort by total rushing yards', () => {
+      sortBy('Yrds');
+      expect(firstRow()).toContain('-3');
+      
+      sortBy('Yrds');
+      expect(firstRow()).toContain('1043');
+    });
+    
+    it('should sort by total rushing yards', () => {
+      sortBy('Lng');
+      expect(firstRow()).toContain('0');
+      
+      sortBy('Lng');
+      expect(firstRow()).toContain('75T');
+    });
+
+    function sortBy(column: string) {
+      const headers: Node[] = Array.from(fixture.nativeElement.querySelectorAll('th').values());
+      const sortingColumn = headers.filter(header => header.textContent.includes(column))[0];
+      sortingColumn.dispatchEvent(new Event('click'));
+      fixture.detectChanges();
+    }
+    
+    function firstRow(): string {
+      const firstRowAfterHeader = fixture.nativeElement.querySelectorAll('tr')[1];
+      return firstRowAfterHeader.textContent;
     }
   });
   
