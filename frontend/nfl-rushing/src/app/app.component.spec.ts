@@ -32,6 +32,6 @@ describe('AppComponent', () => {
 
   it('should include a table for rushing statistics', () => {
    const rushingStatisticsTable = fixture.debugElement.query(By.css('app-rushing-statistics-table'));
-   expect(rushingStatisticsTable).toBeDefined();
+   expect(rushingStatisticsTable).toBeTruthy();
   });
 });
