@@ -7,15 +7,17 @@ import { RushingStatisticsTableComponent } from './rushing-statistics-table.comp
 import { RushingStatisticService } from '../rushing-statistic.service';
 import { of } from 'rxjs';
 import { TEST_RUSHING_STATISTICS } from './test-rushing-statistics';
+import { By } from '@angular/platform-browser';
 
 describe('RushingStatisticsTableComponent', () => {
   let component: RushingStatisticsTableComponent;
   let fixture: ComponentFixture<RushingStatisticsTableComponent>;
   let rushingStatisticServiceStub: jasmine.SpyObj<RushingStatisticService>;
+  const initialRushingStatistics = TEST_RUSHING_STATISTICS.slice(0, 20);
 
   beforeEach(async(() => {
     rushingStatisticServiceStub = jasmine.createSpyObj('RushingStatisticService', ['fetch'])
-    rushingStatisticServiceStub.fetch.and.returnValue(of(TEST_RUSHING_STATISTICS));
+    rushingStatisticServiceStub.fetch.and.returnValue(of(initialRushingStatistics));
 
     TestBed.configureTestingModule({
       imports: [
@@ -125,7 +127,7 @@ describe('RushingStatisticsTableComponent', () => {
     }
 
     function checkContainsData(field: string) {
-      TEST_RUSHING_STATISTICS.forEach(rushingStatistic => {
+      initialRushingStatistics.forEach(rushingStatistic => {
         expect(pageText()).toContain(rushingStatistic[field]);
       }); 
     }
@@ -133,5 +135,63 @@ describe('RushingStatisticsTableComponent', () => {
     function pageText(): string {
       return fixture.debugElement.nativeElement.textContent;
     }
+  });
+
+  describe('Pagination', () => {
+    it('should show the next button if there is more data to be loaded', () => {
+      expect(nextButton()).toBeTruthy();
+    });
+    
+    it('should not show the previous button on the first page', () => {
+      expect(previousButton()).toBeFalsy();
+    });
+
+    it('should make a request to load more data', () => {
+      nextButton().nativeElement.click();
+      fixture.detectChanges();
+    
+      const nextPage = 2;
+      const noFilter = '';
+      expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(nextPage, noFilter);
+    });
+    
+    it('should not show the next button if there is no more data', () => {
+      const nextRushingStatistics = TEST_RUSHING_STATISTICS.slice(19, 21);
+      rushingStatisticServiceStub.fetch.and.returnValue(of(nextRushingStatistics));
+
+      nextButton().nativeElement.click();
+      fixture.detectChanges();
+   
+      expect(nextButton()).toBeFalsy(); 
+    });
+
+
+    it('should show the previous button if there was previous data', () => {
+      nextButton().nativeElement.click();
+      fixture.detectChanges();
+
+      expect(previousButton()).toBeTruthy();
+    });
+    
+    it('should make a request to load previous data', () => {
+      rushingStatisticServiceStub.fetch.calls.reset();
+
+      nextButton().nativeElement.click();
+      fixture.detectChanges();
+      previousButton().nativeElement.click();
+      fixture.detectChanges();
+
+      const previousPage = 1;
+      const noFilter = '';
+      expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(previousPage, noFilter);
+    });
+
+    function nextButton() {
+      return fixture.debugElement.query(By.css('.navigation .next')); 
+    } 
+    
+    function previousButton() {
+      return fixture.debugElement.query(By.css('.navigation .previous')); 
+    } 
   });
 });
