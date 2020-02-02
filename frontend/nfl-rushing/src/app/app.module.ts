@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { RushingStatisticsTableComponent } from './rushing-statistics-table/rushing-statistics-table.component';
-import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatToolbarModule,
+import { MatInputModule, MatPaginatorModule, MatToolbarModule,
          MatSortModule, MatTableModule } from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -29,7 +29,6 @@ import {MatButtonModule} from '@angular/material/button';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
