@@ -257,6 +257,16 @@ describe('RushingStatisticsTableComponent', () => {
       return firstRowAfterHeader.textContent;
     }
   });
+
+  describe('CSV Export', () => {
+    it('should have a button for CSV Exporting', () => {
+      expect(csvExportButton()).toBeTruthy(); 
+    });
+    
+    function csvExportButton() {
+      return fixture.debugElement.query(By.css('.filtering button')).nativeElement; 
+    }
+  });
   
   function nextButton() {
     return fixture.debugElement.query(By.css('.navigation .next')); 
