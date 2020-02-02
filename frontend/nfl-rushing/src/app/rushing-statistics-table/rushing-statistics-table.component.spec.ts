@@ -47,9 +47,9 @@ describe('RushingStatisticsTableComponent', () => {
   });
 
   it('should load the initial rushing statistics', () => {
-    expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledTimes(1);  
+    expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledTimes(1);
     const initialPage = 1;
-    expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(initialPage, noFilter);  
+    expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(initialPage, noFilter);
   });
 
   describe('Table', () => {
@@ -57,32 +57,32 @@ describe('RushingStatisticsTableComponent', () => {
       checkHeader('Player');
       checkContainsData('player');
     });
-    
+
     it('should include the team', () => {
       checkHeader('Team');
       checkContainsData('team');
     });
-    
+
     it('should include the position', () => {
       checkHeader('Pos');
       checkContainsData('position');
     });
-    
+
     it('should include the rushing attempts per game average', () => {
       checkHeader('Att/G');
       checkContainsData('rushingAttemptsPerGameAverage');
     });
-    
+
     it('should include the rushing attempts', () => {
       checkHeader('Att');
       checkContainsData('rushingAttempts');
     });
-    
+
     it('should include the total rushing yards', () => {
       checkHeader('Yrds');
       checkContainsData('totalRushingYards');
     });
-    
+
     it('should include the rushing yards average per attempt', () => {
       checkHeader('Avg');
       checkContainsData('rushingYardsAveragePerAttempt');
@@ -92,7 +92,7 @@ describe('RushingStatisticsTableComponent', () => {
       checkHeader('Yds/G');
       checkContainsData('yardsPerGame');
     });
-    
+
     it('should include the total rushing touchdowns', () => {
       checkHeader('TD');
       checkContainsData('totalRushingTouchdowns');
@@ -107,17 +107,17 @@ describe('RushingStatisticsTableComponent', () => {
       checkHeader('1st');
       checkContainsData('rushingFirstDowns');
     });
-    
+
     it('should include rushing twenty yards each', () => {
       checkHeader('20+');
       checkContainsData('rushingTwentyYardsEach');
     });
-    
+
     it('should include rushing forty yards each', () => {
       checkHeader('40+');
       checkContainsData('rushingFortyYardsEach');
     });
-    
+
     it('should include rushing fumbles', () => {
       checkHeader('FUM');
       checkContainsData('rushingFumbles');
@@ -130,7 +130,7 @@ describe('RushingStatisticsTableComponent', () => {
     function checkContainsData(field: string) {
       initialRushingStatistics.forEach(rushingStatistic => {
         expect(pageText()).toContain(rushingStatistic[field]);
-      }); 
+      });
     }
 
     function pageText(): string {
@@ -142,7 +142,7 @@ describe('RushingStatisticsTableComponent', () => {
     it('should show the next button if there is more data to be loaded', () => {
       expect(nextButton()).toBeTruthy();
     });
-    
+
     it('should not show the previous button on the first page', () => {
       expect(previousButton()).toBeFalsy();
     });
@@ -150,19 +150,19 @@ describe('RushingStatisticsTableComponent', () => {
     it('should make a request to load more data', () => {
       nextButton().nativeElement.click();
       fixture.detectChanges();
-    
+
       const nextPage = 2;
       expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(nextPage, noFilter);
     });
-    
+
     it('should not show the next button if there is no more data', () => {
       const nextRushingStatistics = TEST_RUSHING_STATISTICS.slice(19, 21);
       rushingStatisticServiceStub.fetch.and.returnValue(of(nextRushingStatistics));
 
       nextButton().nativeElement.click();
       fixture.detectChanges();
-   
-      expect(nextButton()).toBeFalsy(); 
+
+      expect(nextButton()).toBeFalsy();
     });
 
     it('should show the previous button if there was previous data', () => {
@@ -171,7 +171,7 @@ describe('RushingStatisticsTableComponent', () => {
 
       expect(previousButton()).toBeTruthy();
     });
-    
+
     it('should make a request to load previous data', () => {
       rushingStatisticServiceStub.fetch.calls.reset();
 
@@ -183,10 +183,10 @@ describe('RushingStatisticsTableComponent', () => {
       const previousPage = 1;
       expect(rushingStatisticServiceStub.fetch).toHaveBeenCalledWith(previousPage, noFilter);
     });
-    
+
     function previousButton() {
-      return fixture.debugElement.query(By.css('.navigation .previous')); 
-    } 
+      return fixture.debugElement.query(By.css('.navigation .previous'));
+    }
   });
 
   describe('Filtering', () => {
@@ -210,7 +210,7 @@ describe('RushingStatisticsTableComponent', () => {
     }));
 
     function applyFilter(filter: string) {
-      const input = fixture.debugElement.query(By.css('.filtering input')).nativeElement; 
+      const input = fixture.debugElement.query(By.css('.filtering input')).nativeElement;
       input.value = filter;
       input.dispatchEvent(new Event('keyup'));
 
@@ -224,7 +224,7 @@ describe('RushingStatisticsTableComponent', () => {
     it('should sort by total rushing touchdowns', () => {
       sortBy('TD');
       expect(firstRow()).toContain('0');
-      
+
       sortBy('TD');
       expect(firstRow()).toContain('9');
     });
@@ -232,15 +232,15 @@ describe('RushingStatisticsTableComponent', () => {
     it('should sort by total rushing yards', () => {
       sortBy('Yrds');
       expect(firstRow()).toContain('-3');
-      
+
       sortBy('Yrds');
       expect(firstRow()).toContain('1043');
     });
-    
+
     it('should sort by total rushing yards', () => {
       sortBy('Lng');
       expect(firstRow()).toContain('0');
-      
+
       sortBy('Lng');
       expect(firstRow()).toContain('75T');
     });
@@ -251,7 +251,7 @@ describe('RushingStatisticsTableComponent', () => {
       sortingColumn.dispatchEvent(new Event('click'));
       fixture.detectChanges();
     }
-    
+
     function firstRow(): string {
       const firstRowAfterHeader = fixture.nativeElement.querySelectorAll('tr')[1];
       return firstRowAfterHeader.textContent;
@@ -260,15 +260,15 @@ describe('RushingStatisticsTableComponent', () => {
 
   describe('CSV Export', () => {
     it('should have a button for CSV Exporting', () => {
-      expect(csvExportButton()).toBeTruthy(); 
+      expect(csvExportButton()).toBeTruthy();
     });
-    
+
     function csvExportButton() {
-      return fixture.debugElement.query(By.css('.filtering button')).nativeElement; 
+      return fixture.debugElement.query(By.css('.filtering button')).nativeElement;
     }
   });
-  
+
   function nextButton() {
-    return fixture.debugElement.query(By.css('.navigation .next')); 
-  } 
+    return fixture.debugElement.query(By.css('.navigation .next'));
+  }
 });
