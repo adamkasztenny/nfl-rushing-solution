@@ -19,8 +19,8 @@ describe('RushingStatisticService', () => {
     controller = TestBed.get(ApolloTestingController);
 
     fakeRushingStatistics = [
-	new RushingStatistic({player: 'Player 1'}),
-	new RushingStatistic({player: 'Player 2'}),
+        new RushingStatistic({player: 'Player 1'}),
+        new RushingStatistic({player: 'Player 2'}),
       ];
   });
 
@@ -47,9 +47,9 @@ describe('RushingStatisticService', () => {
 
     const operation = controller.expectOne(RushingStatisticService.query);
     operation.flush({
-	data: {
-	  rushingStatistics: fakeRushingStatistics,
-	}
+        data: {
+          rushingStatistics: fakeRushingStatistics,
+        }
     });
   });
 });

@@ -23,22 +23,22 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   @ViewChild('input', {static: true}) input: ElementRef;
 
   displayedColumns: string[] = [
-	'player',
-	'team',
-	'position',
-	'rushingAttempts',
-	'rushingAttemptsPerGameAverage',
-	'rushingFirstDownPercentage',
-	'rushingFirstDowns',
-	'rushingFortyYardsEach',
-	'rushingFumbles',
-	'rushingTwentyYardsEach',
-	'rushingYardsAveragePerAttempt',
-	'team',
-	'totalRushingTouchdowns',
-  	'longestRush',
-	'totalRushingYards',
-	'yardsPerGame',
+    'player',
+    'team',
+    'position',
+    'rushingAttempts',
+    'rushingAttemptsPerGameAverage',
+    'rushingFirstDownPercentage',
+    'rushingFirstDowns',
+    'rushingFortyYardsEach',
+    'rushingFumbles',
+    'rushingTwentyYardsEach',
+    'rushingYardsAveragePerAttempt',
+    'team',
+    'totalRushingTouchdowns',
+    'longestRush',
+    'totalRushingYards',
+    'yardsPerGame',
   ];
 
   constructor(private rushingStatisticService: RushingStatisticService) { }
@@ -55,7 +55,7 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   exportToCsv() {
     const filename = 'Rushing Statistics';
     const options = {
-    	headers: this.displayedColumns,
+      headers: this.displayedColumns,
     };
     new AngularCsv(this.dataSource.filteredData, filename, options);
   }
@@ -93,13 +93,13 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   private enableFiltration() {
     fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
-	debounceTime(200),
-	distinctUntilChanged(),
-	tap(() => {
-	  this.nameFilter = this.input.nativeElement.value;
-   this.resetPage();
-   this.loadRushingStatisticsForCurrentPage();
-	})).subscribe();
+        debounceTime(200),
+        distinctUntilChanged(),
+        tap(() => {
+          this.nameFilter = this.input.nativeElement.value;
+          this.resetPage();
+          this.loadRushingStatisticsForCurrentPage();
+        })).subscribe();
   }
 
   private resetPage() {

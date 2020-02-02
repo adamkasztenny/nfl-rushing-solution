@@ -17,7 +17,7 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-	MockComponent(RushingStatisticsTableComponent),
+        MockComponent(RushingStatisticsTableComponent),
       ],
     }).compileComponents();
 
