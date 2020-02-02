@@ -165,7 +165,6 @@ describe('RushingStatisticsTableComponent', () => {
       expect(nextButton()).toBeFalsy(); 
     });
 
-
     it('should show the previous button if there was previous data', () => {
       nextButton().nativeElement.click();
       fixture.detectChanges();

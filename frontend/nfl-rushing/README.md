@@ -1,4 +1,6 @@
-# Frontend - Angular 8
+# Rushing - Frontend
+
+The frontend is written in TypeScript and is an Angular 8 app.
 
 ## Running with Docker (with NGINX)
 Run `make start` from the root (with docker-compose), then navigate to [localhost:8080](http://localhost:8080).
@@ -12,3 +14,6 @@ Run `make build`.
 
 ## Running tests
 Run `make test`.
+
+## Running the linter
+Run `make lint`.
