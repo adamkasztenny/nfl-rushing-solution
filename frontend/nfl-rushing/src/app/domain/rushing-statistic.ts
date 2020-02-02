@@ -1,6 +1,6 @@
 export class RushingStatistic {
-  longestRush = '';
   player = '';
+  team = '';
   position = '';
   rushingAttempts = 0;
   rushingAttemptsPerGameAverage = 0;
@@ -10,8 +10,8 @@ export class RushingStatistic {
   rushingFumbles = 0;
   rushingTwentyYardsEach = 0;
   rushingYardsAveragePerAttempt = 0;
-  team = '';
   totalRushingTouchdowns = 0;
+  longestRush = '';
   totalRushingYards = 0;
   yardsPerGame = 0;
 

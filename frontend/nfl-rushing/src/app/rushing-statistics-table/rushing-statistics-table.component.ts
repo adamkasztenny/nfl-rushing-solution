@@ -34,7 +34,6 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
     'rushingFumbles',
     'rushingTwentyYardsEach',
     'rushingYardsAveragePerAttempt',
-    'team',
     'totalRushingTouchdowns',
     'longestRush',
     'totalRushingYards',
@@ -57,7 +56,11 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
     const options = {
       headers: this.displayedColumns,
     };
-    new AngularCsv(this.dataSource.filteredData, filename, options);
+    const filteredDataWithoutTypeName = this.dataSource.filteredData.map(data => {
+      delete data['__typename'];
+      return data;
+    });
+    new AngularCsv(filteredDataWithoutTypeName, filename, options);
   }
 
   nextPage() {
@@ -75,7 +78,7 @@ export class RushingStatisticsTableComponent implements OnInit, AfterViewInit {
   }
 
   shouldShowNextButton() {
-    return this.dataSource.data.length === this.pageSize;
+    return this.dataSource && this.dataSource.data.length === this.pageSize;
   }
 
   private loadRushingStatisticsForCurrentPage() {
